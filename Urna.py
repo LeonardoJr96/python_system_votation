@@ -58,34 +58,25 @@ def opcao(num, candidatos, opt, numeroVotos):
         return True
 
 def exibirResultado(candidatos, numeroVotos, quantidadePessoas):
-    
-    lista_repeticao = []
-    
-    numeroVotos[5] = int(numeroVotos[0] + numeroVotos[4])
+    numeroVotos[5] = numeroVotos[0] + numeroVotos[4]
     total_votos = quantidadePessoas
     metade_votos = total_votos / 2
     multiplicador = 10
     
-    verifica_repeticao = max(numeroVotos[1:4])
+    max_votos = max(numeroVotos[1:4])
+    vencedor_idx = numeroVotos.index(max_votos) if max_votos >= metade_votos else None
     
-    for _ in range(total_votos):
-        lista_repeticao.append(verifica_repeticao)
-    
-    if len(lista_repeticao) > 1:
+    if vencedor_idx is None:
         porcentagem(numeroVotos, candidatos, multiplicador, total_votos)
         print("\nNão houve candidato vencedor – Será necessário nova eleição")
     else:
-        if numeroVotos[5] >= metade_votos:
-            porcentagem(numeroVotos, candidatos, multiplicador, total_votos)
-            print("\nNão houve candidato vencedor – Será necessário nova eleição")
-        else:
-            print(f'\nEleitores: {quantidadePessoas}')
-            
-            porcentagem(numeroVotos, candidatos, multiplicador, total_votos)
-                        
-            for opt, votos in enumerate(numeroVotos[1:], start=1):       
-                if votos >= metade_votos:
-                    print(f"\n{candidatos[opt*multiplicador]} venceu a eleição com {votos} votos. Obteve {(numeroVotos[opt]*100)/total_votos:.2f}% de aprovação")
+        porcentagem(numeroVotos, candidatos, multiplicador, total_votos)
+        
+        vencedor_nome = candidatos.get(vencedor_idx * multiplicador, "Candidato não encontrado")
+        vencedor_votos = numeroVotos[vencedor_idx]
+        vencedor_porcentagem = (vencedor_votos * 100) / total_votos
+        
+        print(f"\n{vencedor_nome} venceu a eleição com {vencedor_votos} votos. Obteve {vencedor_porcentagem:.2f}% de aprovação")
     
 def votacao():
     candidatos = {0: "Voto em Branco", 10: "Antônio da Silva", 20: "José Nascimento", 30: "Paulo Cardos"}
