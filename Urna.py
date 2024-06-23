@@ -1,5 +1,3 @@
-
-#adicionar time para cada validação  
 import time
 
 def carregar():
